@@ -1,0 +1,22 @@
+{
+  "name": "chat-backend",
+  "version": "1.0.0",
+  "description": "Server from chat_Ant&td",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roman84asas/chat-backend.git"
+  },
+  "author": "I",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roman84asas/chat-backend/issues"
+  },
+  "homepage": "https://github.com/Roman84asas/chat-backend#readme",
+  "dependencies": {
+    "json-server": "^0.15.0"
+  }
+}
