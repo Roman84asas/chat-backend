@@ -5,7 +5,7 @@ import User from "./models/User";
 
 const app = express();
 
-mongoose.connect('mongo', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/mychat', {useNewUrlParser: true});
 
 const user = new User({ email: "hello@mail.ru", fullname: "Test schema" });  
   user.save().then(() => console.log('meow'));
