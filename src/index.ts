@@ -14,6 +14,7 @@ const User = new UserController();
 mongoose.connect('mongodb://localhost:27017/mychat', {
   useNewUrlParser: true,
   useCreateIndex: true,
+  useFindAndModify: false
 });
 
 
