@@ -8,14 +8,19 @@ const app = express();
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/mychat', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/mychat', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+});
 
-app.post('/create', function ( req: any, res: any) { 
+app.post('/create', function ( req: express.Request, res: express.Response) { 
+
  const postData = {
    email: req.body.email,
    fullname: req.body.fullname,
    password: req.body.password
  }  
+ 
   const user = new User(postData);
 
   user

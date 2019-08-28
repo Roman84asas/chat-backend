@@ -1,5 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+
+
 export interface IUser extends Document {
     email: string;
     fullname: string;
@@ -12,13 +14,29 @@ export interface IUser extends Document {
 
 const UserSchema: Schema = new Schema(
     {
-    email: String,
-    avatar: String,
-    fullname: String,
-    password: String,
-    confirmed: Boolean,
-    confirm_hash: String,
-    last_seen: Date,
+      email: {
+        type: String,
+        require: "Email address is required",        
+        unique: true
+      },
+      fullname: {
+        type: String,
+        required: "Fullname is required"
+      },
+      password: {
+        type: String,
+        required: "Password is required"
+      },
+      confirmed: {
+        type: Boolean,
+        default: false
+      },
+      avatar: String,
+      confirm_hash: String,
+      last_seen: {
+        type: Date,
+        default: new Date()
+      }
     }, 
     {
     timestamps: true,
