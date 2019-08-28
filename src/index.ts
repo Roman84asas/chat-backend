@@ -8,15 +8,29 @@ const app = express();
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/mychat', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/mychat', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+});
 
-//const user = new User({ email: "hello@mail.ru", fullname: "Test schema" });  
+//  
 //user.save().then(() => console.log('meow'));
 
 app.post('/create', function ( req: any, res: any) { 
-  console.log(req.body);
+ const postData = {
+   email: req.body.email,
+   fullname: req.body.fullname,
+   password: req.body.password
+ }
   res.send();
-  
+  const user = new User(postData);
+  user.save().then((obj: any) => {
+    res.json(obj);
+  }) 
+    .catch( (reason: any) => {
+      res.json(reason);
+  });
 });
 
 app.listen(3000, function () {
