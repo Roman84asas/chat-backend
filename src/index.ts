@@ -9,7 +9,7 @@ import {
   MessageController
 } from "./controllers";
 
-import { updateLastSeen, checkAuth } from "./middlewares";
+//import { updateLastSeen, checkAuth } from "./middlewares";
 
 const app = express();
 //dotenv.config();
@@ -28,6 +28,7 @@ mongoose.connect("mongodb://localhost:27017/mychat", {
   useFindAndModify: false
 });
 
+app.get("/user/me", User.getMe);
 app.get("/user/:id", User.show);
 app.delete("/user/:id", User.delete);
 app.post("/user/registration", User.create);
@@ -41,6 +42,8 @@ app.get("/messages", Messages.index);
 app.post("/messages", Messages.create);
 app.delete("/messages/:id", Messages.delete);
 
-app.listen(3000, function () {
+app.listen(3030, function () {
     console.log('Example app listening on port 3000!');
 });
+
+

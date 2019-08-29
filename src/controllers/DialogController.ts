@@ -2,7 +2,7 @@ import express from "express";
 import { DialogModel, MessageModel } from "../models";
 
 class DialogController {
-  index(req: express.Request, res: express.Response) {
+  index = (req: express.Request, res: express.Response) => {
     const authorId = "5d681beebc3bc915307b95c1";
 
     DialogModel.find({ author: authorId })
@@ -16,9 +16,9 @@ class DialogController {
         }
         return res.json(dialogs);
       });
-  }
+  };
 
-  create(req: express.Request, res: express.Response) {
+  create = (req: express.Request, res: express.Response) => {
     const postData = {
       author: req.body.author,
       partner: req.body.partner
@@ -28,7 +28,7 @@ class DialogController {
     dialog
       .save()
       .then((dialogObj: any) => {
-          const message = new MessageModel({
+        const message = new MessageModel({
           text: req.body.text,
           user: req.body.author,
           dialog: dialogObj._id
@@ -39,16 +39,16 @@ class DialogController {
           .then(() => {
             res.json(dialogObj);
           })
-          .catch((reason: any) => {
+          .catch(reason => {
             res.json(reason);
           });
       })
       .catch(reason => {
         res.json(reason);
       });
-  }
+  };
 
-  delete(req: express.Request, res: express.Response) {
+  delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     DialogModel.findOneAndRemove({ _id: id })
       .then(dialog => {
@@ -63,7 +63,7 @@ class DialogController {
           message: `Dialog not found`
         });
       });
-  }
+  };
 }
 
 export default DialogController;
