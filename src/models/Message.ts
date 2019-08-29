@@ -10,14 +10,9 @@ export interface IMessage extends Document {
     ref: string;
     require: true;
   };
-  user: {
-    type: string;
-    ref: string;
-    require: true;
-  };
   unread: {
     type: boolean;
-    defaul: boolean;
+    default: boolean;
   };
 }
 

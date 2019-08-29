@@ -2,20 +2,13 @@ import express from "express";
 import { DialogModel, MessageModel } from "../models";
 
 class DialogController {
+  index(req: express.Request, res: express.Response) {
+    const authorId = "5d1ba4777a5a9a1264ba240c";
 
-   index = (req: any, res: express.Response) => {
-    const userId = req.user._id;
-
-    DialogModel.find()
-      .or([{ author: userId }, { partner: userId }])
+    DialogModel.find({ author: authorId })
       .populate(["author", "partner"])
-      .populate({
-        path: "lastMessage",
-        populate: {
-          path: "user"
-        }
-      })
       .exec(function(err, dialogs) {
+        console.log(err);
         if (err) {
           return res.status(404).json({
             message: "Dialogs not found"
@@ -23,9 +16,9 @@ class DialogController {
         }
         return res.json(dialogs);
       });
-  };
+  }
 
-  create = (req: express.Request, res: express.Response) => {
+  create(req: express.Request, res: express.Response) {
     const postData = {
       author: req.body.author,
       partner: req.body.partner
@@ -35,7 +28,8 @@ class DialogController {
     dialog
       .save()
       .then((dialogObj: any) => {
-        const message = new MessageModel({
+          // @ts-ignore
+          const message = new MessageModel({
           text: req.body.text,
           user: req.body.author,
           dialog: dialogObj._id
@@ -46,7 +40,7 @@ class DialogController {
           .then(() => {
             res.json(dialogObj);
           })
-          .catch(reason => {
+          .catch((reason: any) => {
             res.json(reason);
           });
       })
