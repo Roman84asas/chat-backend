@@ -3,7 +3,7 @@ import { DialogModel, MessageModel } from "../models";
 
 class DialogController {
   index(req: express.Request, res: express.Response) {
-    const authorId = "5d1ba4777a5a9a1264ba240c";
+    const authorId = "5d681beebc3bc915307b95c1";
 
     DialogModel.find({ author: authorId })
       .populate(["author", "partner"])
@@ -28,7 +28,6 @@ class DialogController {
     dialog
       .save()
       .then((dialogObj: any) => {
-          // @ts-ignore
           const message = new MessageModel({
           text: req.body.text,
           user: req.body.author,

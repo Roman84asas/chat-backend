@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import express from "express";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
+//import dotenv from "dotenv";
 
 import {
   UserController,
@@ -12,17 +12,17 @@ import {
 import { updateLastSeen, checkAuth } from "./middlewares";
 
 const app = express();
-dotenv.config();
+//dotenv.config();
 
 app.use(bodyParser.json());
-app.use(updateLastSeen);
-app.use(checkAuth);
+//app.use(updateLastSeen);
+//app.use(checkAuth);
 
 const User = new UserController();
 const Dialog = new DialogController();
 const Messages = new MessageController();
 
-mongoose.connect("mongodb://localhost:27017/chat", {
+mongoose.connect("mongodb://localhost:27017/mychat", {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false
@@ -31,7 +31,7 @@ mongoose.connect("mongodb://localhost:27017/chat", {
 app.get("/user/:id", User.show);
 app.delete("/user/:id", User.delete);
 app.post("/user/registration", User.create);
-app.post("/user/login", User.login);
+//app.post("/user/login", User.login);
 
 app.get("/dialogs", Dialog.index);
 app.delete("/dialogs/:id", Dialog.delete);
@@ -41,6 +41,6 @@ app.get("/messages", Messages.index);
 app.post("/messages", Messages.create);
 app.delete("/messages/:id", Messages.delete);
 
-app.listen(process.env.PORT, function() {
-  console.log(`Server: http://localhost:${process.env.PORT}`);
+app.listen(3000, function () {
+    console.log('Example app listening on port 3000!');
 });
