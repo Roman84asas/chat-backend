@@ -26,14 +26,13 @@ app.delete("/user/:id", User.delete);
 app.post("/user/registration", User.create);
 //app.post("/user/login", User.login);
 
-app.get("/messages", Messages.index);
-app.post("/messages", Messages.create);
-app.delete("/messages/:id", Messages.delete);
-
 app.get("/dialogs", Dialog.index);
 app.delete("/dialogs/:id", Dialog.delete);
 app.post("/dialogs", Dialog.create);
 
+app.get("/messages", Messages.index);
+app.post("/messages", Messages.create);
+app.delete("/messages/:id", Messages.delete);
 
 app.listen(3030, function () {
   console.log('Example app listening on port 3030!');
