@@ -10,6 +10,7 @@ import {
 } from "./controllers";
 
 import { updateLastSeen, checkAuth } from "./middlewares";
+import {loginValidation} from "./utils/validations";
 
 const app = express();
 dotenv.config();
@@ -32,7 +33,7 @@ app.get("/user/me", User.getMe);
 app.get("/user/:id", User.show);
 app.delete("/user/:id", User.delete);
 app.post("/user/registration", User.create);
-app.post("/user/login", User.login);
+app.post("/user/login", loginValidation, User.login);
 
 app.get("/dialogs", Dialog.index);
 app.delete("/dialogs/:id", Dialog.delete);

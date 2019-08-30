@@ -1,6 +1,5 @@
 import express from "express";
 import { UserModel } from "../models";
-import { IUser } from "../models/User";
 import { createJWToken } from "../utils";
 
 class UserController {
@@ -64,11 +63,11 @@ class UserController {
 
   login = (req: express.Request, res: express.Response) => {
     const postData = {
-      email: req.body.login,
-      password: req.body.password
+      email: req.body.email,
+      password: req.body.password,
     };
 
-    UserModel.findOne({ email: postData.email }, (err, user: IUser) => {
+    UserModel.findOne({ email: postData.email }, (err, user: any) => {
       if (err) {
         return res.status(404).json({
           message: "User not found"
