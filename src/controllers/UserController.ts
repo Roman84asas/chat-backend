@@ -1,7 +1,7 @@
 import express from "express";
 import { UserModel } from "../models";
-//import { IUser } from "../models/User";
-//import { createJWToken } from "../utils";
+import { IUser } from "../models/User";
+import { createJWToken } from "../utils";
 
 class UserController {
   show = (req: express.Request, res: express.Response) => {
@@ -62,7 +62,7 @@ class UserController {
       });
   };
 
-  /*login = (req: express.Request, res: express.Response) => {
+  login = (req: express.Request, res: express.Response) => {
     const postData = {
       email: req.body.login,
       password: req.body.password
@@ -88,7 +88,7 @@ class UserController {
         });
       }
     });
-  }*/
+  }
 }
 
 export default UserController;
