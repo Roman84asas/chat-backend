@@ -7,7 +7,7 @@ export default (
   next: express.NextFunction
 ) => {
   UserModel.findOneAndUpdate(
-    { _id: "5d681beebc3bc915307b95c1" },
+    { _id: "5d1ba4777a5a9a1264ba240c" },
     {
       fullname: "qwe",
       last_seen: new Date()
