@@ -10,6 +10,7 @@ class DialogController {
     this.io = io;
   }
 
+  //show dialog
   index = (req: any, res: express.Response) => {
     const authorId = req.user._id;
 
@@ -25,6 +26,7 @@ class DialogController {
       });
   };
 
+  //create dialog & message
   create = (req: express.Request, res: express.Response) => {
     const postData = {
       author: req.body.author,
@@ -55,6 +57,7 @@ class DialogController {
       });
   };
 
+  //delete dialog
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     DialogModel.findOneAndRemove({ _id: id })
