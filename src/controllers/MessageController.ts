@@ -1,7 +1,7 @@
 import express from "express";
 import socket from "socket.io";
 
-import { MessageModel } from "../models";
+import {MessageModel, DialogModel, UserModel} from "../models";
 
 class MessageController {
   io: socket.Server;
@@ -10,12 +10,11 @@ class MessageController {
     this.io = io;
   }
 
-  //show message
   index = (req: express.Request, res: express.Response) => {
     const dialogId: string = req.query.dialog;
 
     MessageModel.find({ dialog: dialogId })
-      .populate(["dialog"])
+      .populate(["dialog", "user"])
       .exec(function(err, messages) {
         if (err) {
           return res.status(404).json({
@@ -26,7 +25,6 @@ class MessageController {
       });
   };
 
-  //create message
   create = (req: any, res: express.Response) => {
     const userId = req.user._id;
 
@@ -41,13 +39,30 @@ class MessageController {
     message
       .save()
       .then((obj: any) => {
-        obj.populate("dialog", (err: any, message: any) => {
+        obj.populate(["dialog", "user"], (err: any, message: any) => {
           if (err) {
             return res.status(500).json({
+              status: "error",
               message: err
             });
           }
+
+          DialogModel.findOneAndUpdate(
+            { _id: postData.dialog },
+            { lastMessage: message._id },
+            { upsert: true },
+            function(err) {
+              if (err) {
+                return res.status(500).json({
+                  status: "error",
+                  message: err
+                });
+              }
+            }
+          );
+
           res.json(message);
+
           this.io.emit("SERVER:NEW_MESSAGE", message);
         });
       })
@@ -56,20 +71,45 @@ class MessageController {
       });
   };
 
-  //delete message
-  delete = (req: express.Request, res: express.Response) => {
+  delete = (req: any, res: express.Response) => {
     const id: string = req.params.id;
+    const userId: string = req.user.id;
+
+
+      MessageModel.findById(id, (err, message: any) => {
+          if (err || !message) {
+              return res.status(404).json({
+                  status: "error",
+                  message: "Message not found"
+              });
+          }
+          if (message.user === userId) {
+            message.remove();
+              return res.status(403).json({
+                  status: "success",
+                  message: "Message removed"
+              });
+          } else {
+              return res.status(403).json({
+                  status: "error",
+                  message: "Message not found"
+              });
+          }
+      });
+
     MessageModel.findOneAndRemove({ _id: id })
       .then(message => {
         if (message) {
           res.json({
-            message: `Message deleted`
+              status: "success",
+              message: `Message deleted`
           });
         }
       })
       .catch(() => {
         res.json({
-          message: `Message not found`
+            status: "error",
+            message: "Not have permission"
         });
       });
   };

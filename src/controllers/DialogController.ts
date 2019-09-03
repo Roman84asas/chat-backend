@@ -10,12 +10,18 @@ class DialogController {
     this.io = io;
   }
 
-  //show dialog
   index = (req: any, res: express.Response) => {
-    const authorId = req.user._id;
+    const userId = req.user._id;
 
-    DialogModel.find({ author: authorId })
+    DialogModel.find()
+      .or([{ author: userId }, { partner: userId }])
       .populate(["author", "partner"])
+      .populate({
+        path: "lastMessage",
+        populate: {
+          path: "user"
+        }
+      })
       .exec(function(err, dialogs) {
         if (err) {
           return res.status(404).json({
@@ -26,12 +32,12 @@ class DialogController {
       });
   };
 
-  //create dialog & message
   create = (req: express.Request, res: express.Response) => {
     const postData = {
-      author: req.body.author,
+      author: req.user._id,
       partner: req.body.partner
     };
+
     const dialog = new DialogModel(postData);
 
     dialog
@@ -39,14 +45,21 @@ class DialogController {
       .then((dialogObj: any) => {
         const message = new MessageModel({
           text: req.body.text,
-          user: req.body.author,
+          user: req.user._id,
           dialog: dialogObj._id
         });
 
         message
           .save()
           .then(() => {
-            res.json(dialogObj);
+            dialogObj.lastMessage = message._id;
+            dialogObj.save().then(() => {
+              res.json(dialogObj);
+              this.io.emit("SERVER:DIALOG_CREATED", {
+                ...postData,
+                dialog: dialogObj
+              });
+            });
           })
           .catch(reason => {
             res.json(reason);
@@ -57,7 +70,6 @@ class DialogController {
       });
   };
 
-  //delete dialog
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     DialogModel.findOneAndRemove({ _id: id })
