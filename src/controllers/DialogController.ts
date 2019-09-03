@@ -32,7 +32,7 @@ class DialogController {
       });
   };
 
-  create = (req: express.Request, res: express.Response) => {
+  create = (req: any, res: express.Response) => {
     const postData = {
       author: req.user._id,
       partner: req.body.partner

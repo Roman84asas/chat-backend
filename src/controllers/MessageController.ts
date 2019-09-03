@@ -87,7 +87,7 @@ class MessageController {
             message.remove();
               return res.status(403).json({
                   status: "success",
-                  message: "Message removed"
+                  message: "Message deleted"
               });
           } else {
               return res.status(403).json({
