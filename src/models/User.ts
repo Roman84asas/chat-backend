@@ -58,6 +58,7 @@ UserSchema.pre("save", function(next) {
 
   if (!user.isModified("password")) return next();
 
+
   generatePasswordHash(user.password)
     .then(hash => {
       user.password = String(hash);
