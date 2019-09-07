@@ -26,7 +26,7 @@ class MessageController {
     });
 
     MessageModel.find({ dialog: dialogId })
-      .populate(["dialog", "user"])
+      .populate(["dialog", "user", "attachments"])
       .exec(function(err, messages) {
         if (err) {
           return res.status(404).json({
