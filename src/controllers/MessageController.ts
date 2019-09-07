@@ -43,7 +43,8 @@ class MessageController {
     const postData = {
       text: req.body.text,
       dialog: req.body.dialog_id,
-      user: userId
+      attachments: req.body.attachments,
+      user: userId,
     };
 
     const message = new MessageModel(postData);
@@ -51,7 +52,8 @@ class MessageController {
     message
       .save()
       .then((obj: any) => {
-        obj.populate(["dialog", "user"], (err: any, message: any) => {
+
+        obj.populate(["dialog", "user", "attachments"], (err: any, message: any) => {
           if (err) {
             return res.status(500).json({
               status: "error",
