@@ -3,6 +3,6 @@ const storage = molter.memoryStorage();
 
 
 
-const multer = molter({ storage });
+const uploader  = molter({ storage });
 
-export default multer;
+export default uploader ;

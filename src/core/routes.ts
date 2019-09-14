@@ -2,8 +2,11 @@ import bodyParser from "body-parser";
 import express from "express";
 import socket from "socket.io";
 import { updateLastSeen, checkAuth } from "../middlewares";
-import multer from "./multer";
+
 import { loginValidation, registerValidation } from "../utils/validations";
+
+
+import multer from "./multer";
 import { UserCtrl, DialogCtrl, MessageCtrl, UploadFileCtlr } from "../controllers";
 
 const createRoutes = (app: express.Express, io: socket.Server) => {
