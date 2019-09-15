@@ -1,5 +1,4 @@
 import express from "express";
-//import fs from "fs";
 
 import cloudinary from "../core/cloudinary";
 import { UploadFileModel } from "../models";
